@@ -10,19 +10,22 @@ namespace BinaryChop
     {
         public int Chop(int valueToSearch, int[] valuesToChop)
         {
-            int chopedTotal = 0;
-            int middle = valuesToChop.Count()/2;
+            int chopedTotalLeft = 0;
+            int chopedTotalRight = 0;
+            int total = valuesToChop.Count();
             while (valuesToChop.Count() > 1)
             {
-                int chopedInThisRun;
-                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRun);
-                chopedTotal += chopedInThisRun;
+                int chopedInThisRunLeft;
+                int chopedInThisRunRight;
+                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRunLeft, out chopedInThisRunRight);
+                chopedTotalLeft += chopedInThisRunLeft;
+                chopedTotalRight += chopedInThisRunRight;
             }
 
-            return (middle+chopedTotal);
+            return (total -1 + chopedTotalLeft);
         }
 
-        private int[] NewValuesToChop(int valueToSearch, int[] valuesToChop, out int choped)
+        private int[] NewValuesToChop(int valueToSearch, int[] valuesToChop, out int chopedRight, out int chopedLeft)
         {
             int remainingItems = valuesToChop.Count();
             int middlePositionValue = GetMiddleValue(valuesToChop);
@@ -30,7 +33,7 @@ namespace BinaryChop
 
             if (ValueGreaterThen(middlePositionValue, valueToSearch, valuesToChop))
             {
-                choped = -(middlePositionValue-1);
+                chopedRight = -(middlePositionValue-1);
                 newValuesToChop = new int[middlePositionValue];
                 int o = 0;
                 for (int i = 0; i < middlePositionValue; i++)
@@ -41,7 +44,7 @@ namespace BinaryChop
             }
             else
             {
-                choped = (middlePositionValue-1);
+                chopedLeft = (middlePositionValue - 1);
                 newValuesToChop = new int[remainingItems - middlePositionValue];
                 int o = 0;
                 for (int i = middlePositionValue; i < remainingItems; i++)
