@@ -10,29 +10,25 @@ namespace BinaryChop
     {
         public int Chop(int valueToSearch, int[] valuesToChop)
         {
-            int chopedTotalLeft = 0;
             int chopedTotalRight = 0;
             int total = valuesToChop.Count();
             while (valuesToChop.Count() > 1)
             {
-                int chopedInThisRunLeft;
                 int chopedInThisRunRight;
-                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRunRight, out chopedInThisRunLeft);
-                chopedTotalLeft += chopedInThisRunLeft;
+                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRunRight);
                 chopedTotalRight += chopedInThisRunRight;
             }
 
             return (total - chopedTotalRight);
         }
 
-        private int[] NewValuesToChop(int valueToSearch, int[] valuesToChop, out int chopedRight, out int chopedLeft)
+        private int[] NewValuesToChop(int valueToSearch, int[] valuesToChop, out int chopedRight)
         {
             int remainingItems = valuesToChop.Count();
             int middlePositionValue = GetMiddleValue(valuesToChop);
             int[] newValuesToChop = new int[0];
 
             chopedRight = 0;
-            chopedLeft = 0;
             if (ValueGreaterThen(middlePositionValue, valueToSearch, valuesToChop))
             {
                 chopedRight = middlePositionValue;
@@ -50,7 +46,6 @@ namespace BinaryChop
             }
             else
             {
-                chopedLeft = middlePositionValue - 1;
                 newValuesToChop = new int[remainingItems - middlePositionValue];
                 int o = 0;
                 for (int i = middlePositionValue; i < remainingItems; i++)
