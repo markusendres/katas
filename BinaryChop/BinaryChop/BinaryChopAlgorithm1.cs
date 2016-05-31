@@ -8,14 +8,14 @@ namespace BinaryChop
 {
     public class BinaryChopAlgorithm1
     {
-        public int FindPositionOfValueInSortedNumberArray(int valueToSearch, int[] sortedNumberArray)
+        public int FindPositionOfValueInSortedNumberArray(int valueToSearch, int[] sortedNumbers)
         {
             int chopedItemsFromTheRightTotal = 0;
-            int total = sortedNumberArray.Count();
-            while (sortedNumberArray.Count() > 1)
+            int total = sortedNumbers.Count();
+            while (sortedNumbers.Count() > 1)
             {
                 int chopedItemsFromTheRightSideInThisRun;
-                sortedNumberArray = NewValuesToChop(valueToSearch, sortedNumberArray, out chopedItemsFromTheRightSideInThisRun);
+                sortedNumbers = NewValuesToChop(valueToSearch, sortedNumbers, out chopedItemsFromTheRightSideInThisRun);
                 chopedItemsFromTheRightTotal += chopedItemsFromTheRightSideInThisRun;
             }
 
@@ -26,7 +26,7 @@ namespace BinaryChop
         {
             int numberOfRemainingItems = sortedNumberArray.Count();
             int middlePositionValue = GetMiddleValue(sortedNumberArray);
-            int[] remainingValues;
+            int[] remainingSortedNumbers;
 
             chopedRight = 0;
             if (ValueGreaterThen(middlePositionValue, valueToSearch, sortedNumberArray))
@@ -36,13 +36,13 @@ namespace BinaryChop
                 {
                     chopedRight--;
                 }
-                remainingValues = RemoveItemsFromTheRightSide(sortedNumberArray, middlePositionValue);
+                remainingSortedNumbers = RemoveItemsFromTheRightSide(sortedNumberArray, middlePositionValue);
             }
             else
             {
-                remainingValues = RemoveItemsFromTheLeftSide(sortedNumberArray, numberOfRemainingItems, middlePositionValue);
+                remainingSortedNumbers = RemoveItemsFromTheLeftSide(sortedNumberArray, numberOfRemainingItems, middlePositionValue);
             }
-            return remainingValues;
+            return remainingSortedNumbers;
         }
 
         private static int[] RemoveItemsFromTheLeftSide(int[] valuesToChop, int numberOfRemainingItems, int middlePositionValue)
