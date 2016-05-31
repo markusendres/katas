@@ -8,48 +8,48 @@ namespace BinaryChop
 {
     public class BinaryChopAlgorithm1
     {
-        public int Chop(int valueToSearch, int[] valuesToChop)
+        public int FindPositionOfValueInSortedNumberArray(int valueToSearch, int[] sortedNumberArray)
         {
-            int chopedTotalRight = 0;
-            int total = valuesToChop.Count();
-            while (valuesToChop.Count() > 1)
+            int chopedItemsFromTheRightTotal = 0;
+            int total = sortedNumberArray.Count();
+            while (sortedNumberArray.Count() > 1)
             {
-                int chopedInThisRunRight;
-                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRunRight);
-                chopedTotalRight += chopedInThisRunRight;
+                int chopedItemsFromTheRightSideInThisRun;
+                sortedNumberArray = NewValuesToChop(valueToSearch, sortedNumberArray, out chopedItemsFromTheRightSideInThisRun);
+                chopedItemsFromTheRightTotal += chopedItemsFromTheRightSideInThisRun;
             }
 
-            return (total - chopedTotalRight);
+            return (total - chopedItemsFromTheRightTotal);
         }
 
-        private int[] NewValuesToChop(int valueToSearch, int[] valuesToChop, out int chopedRight)
+        private int[] NewValuesToChop(int valueToSearch, int[] sortedNumberArray, out int chopedRight)
         {
-            int remainingItems = valuesToChop.Count();
-            int middlePositionValue = GetMiddleValue(valuesToChop);
-            int[] newValuesToChop;
+            int numberOfRemainingItems = sortedNumberArray.Count();
+            int middlePositionValue = GetMiddleValue(sortedNumberArray);
+            int[] remainingValues;
 
             chopedRight = 0;
-            if (ValueGreaterThen(middlePositionValue, valueToSearch, valuesToChop))
+            if (ValueGreaterThen(middlePositionValue, valueToSearch, sortedNumberArray))
             {
                 chopedRight = middlePositionValue;
-                if (remainingItems%2 != 0)
+                if (numberOfRemainingItems % 2 != 0)
                 {
                     chopedRight--;
                 }
-                newValuesToChop = RemoveItemsFromTheRightSide(valuesToChop, middlePositionValue);
+                remainingValues = RemoveItemsFromTheRightSide(sortedNumberArray, middlePositionValue);
             }
             else
             {
-                newValuesToChop = RemoveItemsFromTheLeftSide(valuesToChop, remainingItems, middlePositionValue);
+                remainingValues = RemoveItemsFromTheLeftSide(sortedNumberArray, numberOfRemainingItems, middlePositionValue);
             }
-            return newValuesToChop;
+            return remainingValues;
         }
 
-        private static int[] RemoveItemsFromTheLeftSide(int[] valuesToChop, int remainingItems, int middlePositionValue)
+        private static int[] RemoveItemsFromTheLeftSide(int[] valuesToChop, int numberOfRemainingItems, int middlePositionValue)
         {
-            var newValuesToChop = new int[remainingItems - middlePositionValue];
+            var newValuesToChop = new int[numberOfRemainingItems - middlePositionValue];
             int o = 0;
-            for (int i = middlePositionValue; i < remainingItems; i++)
+            for (int i = middlePositionValue; i < numberOfRemainingItems; i++)
             {
                 newValuesToChop[o] = valuesToChop[i];
                 o++;
@@ -57,21 +57,21 @@ namespace BinaryChop
             return newValuesToChop;
         }
 
-        private static int[] RemoveItemsFromTheRightSide(int[] valuesToChop, int middlePositionValue)
+        private static int[] RemoveItemsFromTheRightSide(int[] sortedNumberArray, int middlePositionValue)
         {
             var newValuesToChop = new int[middlePositionValue];
             int o = 0;
             for (int i = 0; i < middlePositionValue; i++)
             {
-                newValuesToChop[o] = valuesToChop[i];
+                newValuesToChop[o] = sortedNumberArray[i];
                 o++;
             }
             return newValuesToChop;
         }
 
-        private bool ValueGreaterThen(int valueToCheck, int valueToSearch, int[] valuesToChop)
+        private bool ValueGreaterThen(int valueToCheck, int valueToSearch, int[] sortedNumberArray)
         {
-            return valuesToChop[valueToCheck] > valueToSearch;
+            return sortedNumberArray[valueToCheck] > valueToSearch;
         }
 
         private static int GetMiddleValue(int[] valuesToChop)
