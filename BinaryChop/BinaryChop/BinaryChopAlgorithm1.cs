@@ -17,12 +17,12 @@ namespace BinaryChop
             {
                 int chopedInThisRunLeft;
                 int chopedInThisRunRight;
-                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRunLeft, out chopedInThisRunRight);
+                valuesToChop = NewValuesToChop(valueToSearch, valuesToChop, out chopedInThisRunRight, out chopedInThisRunLeft);
                 chopedTotalLeft += chopedInThisRunLeft;
                 chopedTotalRight += chopedInThisRunRight;
             }
 
-            return (total -1 + chopedTotalLeft);
+            return (total - chopedTotalRight);
         }
 
         private int[] NewValuesToChop(int valueToSearch, int[] valuesToChop, out int chopedRight, out int chopedLeft)
@@ -31,9 +31,15 @@ namespace BinaryChop
             int middlePositionValue = GetMiddleValue(valuesToChop);
             int[] newValuesToChop = new int[0];
 
+            chopedRight = 0;
+            chopedLeft = 0;
             if (ValueGreaterThen(middlePositionValue, valueToSearch, valuesToChop))
             {
-                chopedRight = -(middlePositionValue-1);
+                chopedRight = middlePositionValue;
+                if (remainingItems%2 != 0)
+                {
+                    chopedRight--;
+                }
                 newValuesToChop = new int[middlePositionValue];
                 int o = 0;
                 for (int i = 0; i < middlePositionValue; i++)
@@ -44,7 +50,7 @@ namespace BinaryChop
             }
             else
             {
-                chopedLeft = (middlePositionValue - 1);
+                chopedLeft = middlePositionValue - 1;
                 newValuesToChop = new int[remainingItems - middlePositionValue];
                 int o = 0;
                 for (int i = middlePositionValue; i < remainingItems; i++)
